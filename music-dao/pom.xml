@@ -18,6 +18,7 @@
             <groupId>com.music</groupId>
             <artifactId>music-base</artifactId>
             <version>4.0.0</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>

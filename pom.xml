@@ -15,6 +15,7 @@
         <module>music-base</module>
         <module>music-dao</module>
         <module>music-controller</module>
+        <module>music-interface</module>
     </modules>
 
     <parent>

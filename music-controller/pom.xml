@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <artifactId>music-controller</artifactId>
 
     <parent>
@@ -13,6 +13,13 @@
     </parent>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.music</groupId>
+            <artifactId>music-interface</artifactId>
+            <version>4.0.0</version>
+            <scope>compile</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -78,17 +85,6 @@
             </resource>
         </resources>
         <plugins>
-            <plugin>
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
 
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -98,6 +94,7 @@
                 </configuration>
             </plugin>
         </plugins>
+
     </build>
 
     <repositories>
