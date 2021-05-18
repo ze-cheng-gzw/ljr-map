@@ -5,7 +5,13 @@
       <list>
         <option value="$PROJECT_DIR$/music-controller/pom.xml" />
         <option value="$PROJECT_DIR$/music-base/pom.xml" />
+        <option value="$PROJECT_DIR$/music-dao/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/music-controller/music-test/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager">
