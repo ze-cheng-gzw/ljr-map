@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.dao.AlbumMapper">
+  <resultMap id="BaseResultMap" type="com.demo.entity.Album">
+    <id column="album_id" jdbcType="BIGINT" property="albumId" />
+    <result column="album_name" jdbcType="VARCHAR" property="albumName" />
+    <result column="release_time" jdbcType="VARCHAR" property="releaseTime" />
+    <result column="album_img" jdbcType="VARCHAR" property="albumImg" />
+    <result column="voice" jdbcType="VARCHAR" property="voice" />
+    <result column="record_company" jdbcType="VARCHAR" property="recordCompany" />
+    <result column="album_introduction" jdbcType="VARCHAR" property="albumIntroduction" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    album_id, album_name, release_time, album_img, voice, record_company, album_introduction, 
+    create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_album
+    where album_id = #{albumId,jdbcType=BIGINT}
+  </select>
+    <select id="getAlbumInfoVOByAlbumId" resultType="com.demo.vo.AlbumInfoVO">
+      select ta.album_name as albumName,
+       ta.release_time as releaseTime,
+       ta.album_img as albumImg,
+       ta.voice,
+       ta.record_company as recordCompany,
+       ta.album_introduction as albumIntroduction
+from tb_album ta where ta.album_id = #{albumId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_album
+    where album_id = #{albumId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.demo.entity.Album">
+    insert into tb_album (album_id, album_name, release_time, 
+      album_img, voice, record_company, 
+      album_introduction, create_time)
+    values (#{albumId,jdbcType=BIGINT}, #{albumName,jdbcType=VARCHAR}, #{releaseTime,jdbcType=VARCHAR}, 
+      #{albumImg,jdbcType=VARCHAR}, #{voice,jdbcType=VARCHAR}, #{recordCompany,jdbcType=VARCHAR}, 
+      #{albumIntroduction,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.demo.entity.Album">
+    insert into tb_album
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="albumId != null">
+        album_id,
+      </if>
+      <if test="albumName != null">
+        album_name,
+      </if>
+      <if test="releaseTime != null">
+        release_time,
+      </if>
+      <if test="albumImg != null">
+        album_img,
+      </if>
+      <if test="voice != null">
+        voice,
+      </if>
+      <if test="recordCompany != null">
+        record_company,
+      </if>
+      <if test="albumIntroduction != null">
+        album_introduction,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="albumId != null">
+        #{albumId,jdbcType=BIGINT},
+      </if>
+      <if test="albumName != null">
+        #{albumName,jdbcType=VARCHAR},
+      </if>
+      <if test="releaseTime != null">
+        #{releaseTime,jdbcType=VARCHAR},
+      </if>
+      <if test="albumImg != null">
+        #{albumImg,jdbcType=VARCHAR},
+      </if>
+      <if test="voice != null">
+        #{voice,jdbcType=VARCHAR},
+      </if>
+      <if test="recordCompany != null">
+        #{recordCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="albumIntroduction != null">
+        #{albumIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.demo.entity.Album">
+    update tb_album
+    <set>
+      <if test="albumName != null">
+        album_name = #{albumName,jdbcType=VARCHAR},
+      </if>
+      <if test="releaseTime != null">
+        release_time = #{releaseTime,jdbcType=VARCHAR},
+      </if>
+      <if test="albumImg != null">
+        album_img = #{albumImg,jdbcType=VARCHAR},
+      </if>
+      <if test="voice != null">
+        voice = #{voice,jdbcType=VARCHAR},
+      </if>
+      <if test="recordCompany != null">
+        record_company = #{recordCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="albumIntroduction != null">
+        album_introduction = #{albumIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where album_id = #{albumId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.demo.entity.Album">
+    update tb_album
+    set album_name = #{albumName,jdbcType=VARCHAR},
+      release_time = #{releaseTime,jdbcType=VARCHAR},
+      album_img = #{albumImg,jdbcType=VARCHAR},
+      voice = #{voice,jdbcType=VARCHAR},
+      record_company = #{recordCompany,jdbcType=VARCHAR},
+      album_introduction = #{albumIntroduction,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where album_id = #{albumId,jdbcType=BIGINT}
+  </update>
+</mapper>

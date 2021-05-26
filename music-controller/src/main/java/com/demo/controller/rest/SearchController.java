@@ -7,6 +7,7 @@ import com.demo.common.Result;
 import com.demo.entity.Member;
 import com.demo.interfaceService.SearchService;
 import com.demo.param.ConditionsSearchParam;
+import com.demo.vo.ConditionsSearchVO;
 import com.demo.vo.SearchBoxChangeVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -46,10 +47,10 @@ public class SearchController {
 
     @GetMapping("/search/conditionsSearch")
     @ApiOperation(value = "搜索框搜索", notes = "返回结果")
-    public Result<SearchBoxChangeVO> conditionsSearch(ConditionsSearchParam conditionsSearchParam) {
+    public Result<ConditionsSearchVO> conditionsSearch(ConditionsSearchParam conditionsSearchParam) {
 
-        SearchBoxChangeVO searchBoxChangeVO = searchService.conditionsSearch(conditionsSearchParam);
+        ConditionsSearchVO conditionsSearchVO = searchService.conditionsSearch(conditionsSearchParam);
 
-        return ApiResponseWrapper.wrap(ApiResponseCode.SUCCESS, searchBoxChangeVO);
+        return ApiResponseWrapper.wrap(ApiResponseCode.SUCCESS, conditionsSearchVO);
     }
 }

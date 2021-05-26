@@ -16,4 +16,16 @@ public class ConditionsSearchVO implements Serializable {
 
     @ApiModelProperty("音乐总数")
     private Long totalNumber;
+
+    @ApiModelProperty("歌手信息对象")
+    private SingerInfoVO singerInfoVO;
+
+    @ApiModelProperty("专辑信息对象")
+    private AlbumInfoVO albumInfoVO;
+
+    @ApiModelProperty("专辑简略信息")
+    private List<AlbumInfoBriefVO> albumInfoBriefVOList;
+
+    @ApiModelProperty("专辑总数")
+    private Long albumTotalNumber;
 }

@@ -52,7 +52,7 @@
         </javaClientGenerator>
 
         <!--需要自动生成代码的表及对应的类名设置-->
-        <table tableName="tb_member" domainObjectName="Member"
+        <table tableName="tb_album" domainObjectName="Album"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">

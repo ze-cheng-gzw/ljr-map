@@ -2,6 +2,7 @@ package com.demo.interfaceService;
 
 import com.demo.entity.Member;
 import com.demo.param.ConditionsSearchParam;
+import com.demo.vo.ConditionsSearchVO;
 import com.demo.vo.SearchBoxChangeVO;
 
 public interface SearchService {
@@ -20,5 +21,5 @@ public interface SearchService {
      * @param conditionsSearchParam
      * @return
      */
-    SearchBoxChangeVO conditionsSearch(ConditionsSearchParam conditionsSearchParam);
+    ConditionsSearchVO conditionsSearch(ConditionsSearchParam conditionsSearchParam);
 }

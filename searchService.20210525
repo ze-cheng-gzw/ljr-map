@@ -1,0 +1,8 @@
+[2021-05-25 10:00:20] 192.168.3.116:50297 -> 192.168.3.116:20881 - com.demo.interfaceService.SearchService searchBoxChange(java.lang.String) ["千"]
+[2021-05-25 10:03:48] 192.168.3.116:50540 -> 192.168.3.116:20881 - com.demo.interfaceService.SearchService searchBoxChange(java.lang.String) ["千"]
+[2021-05-25 10:06:08] 192.168.3.116:50696 -> 192.168.3.116:20881 - com.demo.interfaceService.SearchService searchBoxChange(java.lang.String) ["千"]
+[2021-05-25 10:07:51] 192.168.3.116:50845 -> 192.168.3.116:20881 - com.demo.interfaceService.SearchService searchBoxChange(java.lang.String) ["千"]
+[2021-05-25 10:13:14] 192.168.3.116:51267 -> 192.168.3.116:20881 - com.demo.interfaceService.SearchService searchBoxChange(java.lang.String) ["千"]
+[2021-05-25 10:27:16] 192.168.3.116:52414 -> 192.168.3.116:20881 - com.demo.interfaceService.SearchService searchBoxChange(java.lang.String) ["千"]
+[2021-05-25 10:29:48] 192.168.3.116:52627 -> 192.168.3.116:20881 - com.demo.interfaceService.SearchService searchBoxChange(java.lang.String) ["千"]
+[2021-05-25 10:32:29] 192.168.3.116:52858 -> 192.168.3.116:20881 - com.demo.interfaceService.SearchService searchBoxChange(java.lang.String) ["千"]
