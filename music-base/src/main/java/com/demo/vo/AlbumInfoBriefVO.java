@@ -10,6 +10,9 @@ import java.io.Serializable;
 @Data
 public class AlbumInfoBriefVO implements Serializable {
 
+    @ApiModelProperty("专辑Id")
+    private String albumId;
+
     @ApiModelProperty("专辑名称")
     private String albumName;
 

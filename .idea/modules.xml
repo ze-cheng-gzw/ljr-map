@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/music-base/music-base.iml" filepath="$PROJECT_DIR$/music-base/music-base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/music-consumers/music-consumers.iml" filepath="$PROJECT_DIR$/music-consumers/music-consumers.iml" />
       <module fileurl="file://$PROJECT_DIR$/music-controller/music-controller.iml" filepath="$PROJECT_DIR$/music-controller/music-controller.iml" />
       <module fileurl="file://$PROJECT_DIR$/music-dao/music-dao.iml" filepath="$PROJECT_DIR$/music-dao/music-dao.iml" />
       <module fileurl="file://$PROJECT_DIR$/music-interface/music-interface.iml" filepath="$PROJECT_DIR$/music-interface/music-interface.iml" />

@@ -4,19 +4,24 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSONObject;
 import com.demo.common.BizException;
 import com.demo.dao.AlbumMapper;
-import com.demo.dao.MemberMapper;
 import com.demo.dao.SingerMapper;
-import com.demo.entity.Member;
 import com.demo.interfaceService.SearchService;
 import com.demo.param.ConditionsSearchParam;
+import com.demo.util.ESUtil;
 import com.demo.vo.*;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.music.service.config.RocketMQProducer;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestClientFactory;
 import io.searchbox.client.config.HttpClientConfig;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
+import org.apache.rocketmq.client.exception.MQBrokerException;
+import org.apache.rocketmq.client.exception.MQClientException;
+import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.common.message.Message;
+import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -53,8 +58,7 @@ public class SearchServiceImpl implements SearchService {
 
     private static Long albumTotalNumber; //专辑的总数
 
-    @Resource
-    private MemberMapper memberMapper;
+    private static final String TOPIC = "integral_topic";  //广播名称
 
     @Resource
     private SingerMapper singerMapper;
@@ -64,6 +68,9 @@ public class SearchServiceImpl implements SearchService {
 
     @Resource
     private AlbumMapper albumMapper;
+
+    @Resource
+    private RocketMQProducer rocketMQProducer;
 
     //第二种连接方法与在ymi配置一样
     public JestClient getJestCline() {
@@ -80,11 +87,6 @@ public class SearchServiceImpl implements SearchService {
         Config config = new Config();
         config.useSingleServer().setAddress("redis://127.0.0.1:6379");
         return config;
-    }
-
-
-    public Member findMemberById() {
-        return memberMapper.selectByPrimaryKey(1L);
     }
 
     public SearchBoxChangeVO searchBoxChange(String searchString) {
@@ -105,7 +107,7 @@ public class SearchServiceImpl implements SearchService {
 
         //创建访问具体的index
         Search.Builder searchBuilder = new Search.Builder(searchSourceBuilder.toString());
-        Search search = searchBuilder.addIndex("music_index").build();
+        Search search = searchBuilder.addIndex(ESUtil.MUSIC_INDEX).build();
 
         List<SingleVO> singleVOS = new ArrayList<SingleVO>();
         try {
@@ -362,5 +364,32 @@ public class SearchServiceImpl implements SearchService {
             BizException.error("es链接异常");
         }
         return  albumInfoBriefVOList;
+    }
+
+    /**
+     * 作为生产者，向rocketmq发送消息
+     * @return
+     */
+    public boolean forPoints(String text) {
+        /**
+         * String topic：话题
+         * String tags：二级分类
+         * byte[] body：body消息字节数组
+         */
+        Message message = new Message(TOPIC,"tag_a", ("hello ybchen ==>" + text).getBytes());
+        try {
+            SendResult send = rocketMQProducer.getProducer().send(message);
+            System.out.println("send------>"+send);
+            return true;
+        } catch (MQClientException e) {
+            e.printStackTrace();
+        } catch (RemotingException e) {
+            e.printStackTrace();
+        } catch (MQBrokerException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

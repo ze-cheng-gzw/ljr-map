@@ -9,6 +9,7 @@
         <module name="music-base" />
         <module name="music-interface" />
         <module name="music-service" />
+        <module name="music-consumers" />
         <module name="music-test" />
         <module name="music-controller" />
         <module name="music-dao" />
@@ -16,6 +17,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="music-base" target="1.8" />
+      <module name="music-consumers" target="1.8" />
       <module name="music-controller" target="1.8" />
       <module name="music-dao" target="1.8" />
       <module name="music-interface" target="1.8" />
@@ -27,6 +29,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="music-base" options="-parameters" />
+      <module name="music-consumers" options="-parameters" />
       <module name="music-controller" options="-parameters" />
       <module name="music-dao" options="-parameters" />
       <module name="music-interface" options="-parameters" />

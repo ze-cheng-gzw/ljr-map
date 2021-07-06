@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/music-dao/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/music-service/pom.xml" />
+        <option value="$PROJECT_DIR$/music-consumers/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

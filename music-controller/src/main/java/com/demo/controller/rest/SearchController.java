@@ -4,7 +4,6 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.demo.common.ApiResponseCode;
 import com.demo.common.ApiResponseWrapper;
 import com.demo.common.Result;
-import com.demo.entity.Member;
 import com.demo.interfaceService.SearchService;
 import com.demo.param.ConditionsSearchParam;
 import com.demo.vo.ConditionsSearchVO;
@@ -26,13 +25,6 @@ public class SearchController {
     @Reference
     private SearchService searchService;
 
-    @GetMapping("/order/getMemberById")
-    @ApiOperation(value = "测试dubbo之间的链接", notes = "测试")
-    public Member getMemberById() {
-
-        return searchService.findMemberById();
-    }
-
     @GetMapping("/search/searchBoxChange")
     @ApiOperation(value = "搜索框改变搜索", notes = "返回结果")
     @ApiImplicitParams({
@@ -52,5 +44,17 @@ public class SearchController {
         ConditionsSearchVO conditionsSearchVO = searchService.conditionsSearch(conditionsSearchParam);
 
         return ApiResponseWrapper.wrap(ApiResponseCode.SUCCESS, conditionsSearchVO);
+    }
+
+    @GetMapping("/search/forPoints")
+    @ApiOperation(value = "操作获取积分", notes = "返回结果")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "text", value = "发送内容", required = true, paramType = "query", dataType = "String")
+    })
+    public Result<Boolean> forPoints(String text) {
+
+        boolean aBoolean = searchService.forPoints(text);
+
+        return ApiResponseWrapper.wrap(ApiResponseCode.SUCCESS, aBoolean);
     }
 }
