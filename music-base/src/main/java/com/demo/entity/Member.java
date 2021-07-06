@@ -14,6 +14,8 @@ public class Member implements Serializable {
 
     private String passwordSalt;
 
+    private Integer vipLevel;
+
     private Date createTime;
 
     private static final long serialVersionUID = 1L;
@@ -56,6 +58,14 @@ public class Member implements Serializable {
 
     public void setPasswordSalt(String passwordSalt) {
         this.passwordSalt = passwordSalt == null ? null : passwordSalt.trim();
+    }
+
+    public Integer getVipLevel() {
+        return vipLevel;
+    }
+
+    public void setVipLevel(Integer vipLevel) {
+        this.vipLevel = vipLevel;
     }
 
     public Date getCreateTime() {

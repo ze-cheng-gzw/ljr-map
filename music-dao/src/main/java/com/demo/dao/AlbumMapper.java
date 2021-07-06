@@ -4,6 +4,8 @@ import com.demo.entity.Album;
 import com.demo.vo.AlbumInfoVO;
 import io.lettuce.core.dynamic.annotation.Param;
 
+import java.util.List;
+
 public interface AlbumMapper {
     int deleteByPrimaryKey(Long albumId);
 
@@ -23,4 +25,10 @@ public interface AlbumMapper {
      * @return
      */
     AlbumInfoVO getAlbumInfoVOByAlbumId(@Param("albumId") String albumId);
+
+    /**
+     * 批量添加专辑信息
+     * @param albums
+     */
+    void addAlbumList(@Param("albums") List<Album> albums);
 }

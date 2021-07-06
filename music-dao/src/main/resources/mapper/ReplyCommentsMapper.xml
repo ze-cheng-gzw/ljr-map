@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.dao.ReplyCommentsMapper">
+  <resultMap id="BaseResultMap" type="com.demo.entity.ReplyComments">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="comments_id" jdbcType="BIGINT" property="commentsId" />
+    <result column="reply_member_id" jdbcType="BIGINT" property="replyMemberId" />
+    <result column="reply_member_name" jdbcType="VARCHAR" property="replyMemberName" />
+    <result column="reply_member_url" jdbcType="VARCHAR" property="replyMemberUrl" />
+    <result column="reply_content" jdbcType="VARCHAR" property="replyContent" />
+    <result column="by_reply_member_id" jdbcType="BIGINT" property="byReplyMemberId" />
+    <result column="by_reply_member_name" jdbcType="VARCHAR" property="byReplyMemberName" />
+    <result column="by_reply_member_comments" jdbcType="VARCHAR" property="byReplyMemberComments" />
+    <result column="reply_level" jdbcType="INTEGER" property="replyLevel" />
+    <result column="thumb_up_number" jdbcType="BIGINT" property="thumbUpNumber" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, comments_id, reply_member_id, reply_member_name, reply_member_url, reply_content, 
+    by_reply_member_id, by_reply_member_name, by_reply_member_comments, reply_level, 
+    thumb_up_number, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_reply_comments
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+    <select id="findReplyCommentsByCommentsId" resultType="com.demo.vo.ReplyCommentsVO">
+      select trc.id,
+             trc.reply_member_id as replyMemberId,
+             trc.reply_member_name as replyMemberName,
+             trc.reply_member_url as replyMemberUrl,
+             trc.reply_content as replyContent,
+             trc.thumb_up_number as thumbUpNumber,
+             trc.by_reply_member_id as byReplyMemberId,
+             trc.by_reply_member_name as byReplyMemberName,
+             trc.by_reply_member_comments as byReplyMemberComments,
+             trc.reply_level as replyLevel,
+             trc.create_time as createTime
+      from tb_reply_comments trc
+      <where>
+        <if test="commentsId != null">
+          trc.comments_id = #{commentsId}
+        </if>
+        <if test="sortingType == 0">
+          order by trc.thumb_up_number asc
+        </if>
+        <if test="sortingType == 1">
+          order by trc.create_time desc
+        </if>
+      </where>
+    </select>
+    <select id="findReplyCommentsByCommentsIdFixed" resultType="com.demo.vo.ReplyCommentsVO">
+      select trc.id,
+             trc.reply_member_id as replyMemberId,
+             trc.reply_member_name as replyMemberName,
+             trc.reply_member_url as replyMemberUrl,
+             trc.reply_content as replyContent,
+             trc.thumb_up_number as thumbUpNumber,
+             trc.by_reply_member_id as byReplyMemberId,
+             trc.by_reply_member_name as byReplyMemberName,
+             trc.by_reply_member_comments as byReplyMemberComments,
+             trc.reply_level as replyLevel,
+             trc.create_time as createTime
+      from tb_reply_comments trc
+      where trc.comments_id = #{commentsId} order by trc.thumb_up_number asc limit #{fixedNumber}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_reply_comments
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.demo.entity.ReplyComments">
+    insert into tb_reply_comments (id, comments_id, reply_member_id, 
+      reply_member_name, reply_member_url, reply_content, 
+      by_reply_member_id, by_reply_member_name, by_reply_member_comments, 
+      reply_level, thumb_up_number, create_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{commentsId,jdbcType=BIGINT}, #{replyMemberId,jdbcType=BIGINT}, 
+      #{replyMemberName,jdbcType=VARCHAR}, #{replyMemberUrl,jdbcType=VARCHAR}, #{replyContent,jdbcType=VARCHAR}, 
+      #{byReplyMemberId,jdbcType=BIGINT}, #{byReplyMemberName,jdbcType=VARCHAR}, #{byReplyMemberComments,jdbcType=VARCHAR}, 
+      #{replyLevel,jdbcType=INTEGER}, #{thumbUpNumber,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.demo.entity.ReplyComments">
+    insert into tb_reply_comments
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="commentsId != null">
+        comments_id,
+      </if>
+      <if test="replyMemberId != null">
+        reply_member_id,
+      </if>
+      <if test="replyMemberName != null">
+        reply_member_name,
+      </if>
+      <if test="replyMemberUrl != null">
+        reply_member_url,
+      </if>
+      <if test="replyContent != null">
+        reply_content,
+      </if>
+      <if test="byReplyMemberId != null">
+        by_reply_member_id,
+      </if>
+      <if test="byReplyMemberName != null">
+        by_reply_member_name,
+      </if>
+      <if test="byReplyMemberComments != null">
+        by_reply_member_comments,
+      </if>
+      <if test="replyLevel != null">
+        reply_level,
+      </if>
+      <if test="thumbUpNumber != null">
+        thumb_up_number,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="commentsId != null">
+        #{commentsId,jdbcType=BIGINT},
+      </if>
+      <if test="replyMemberId != null">
+        #{replyMemberId,jdbcType=BIGINT},
+      </if>
+      <if test="replyMemberName != null">
+        #{replyMemberName,jdbcType=VARCHAR},
+      </if>
+      <if test="replyMemberUrl != null">
+        #{replyMemberUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="replyContent != null">
+        #{replyContent,jdbcType=VARCHAR},
+      </if>
+      <if test="byReplyMemberId != null">
+        #{byReplyMemberId,jdbcType=BIGINT},
+      </if>
+      <if test="byReplyMemberName != null">
+        #{byReplyMemberName,jdbcType=VARCHAR},
+      </if>
+      <if test="byReplyMemberComments != null">
+        #{byReplyMemberComments,jdbcType=VARCHAR},
+      </if>
+      <if test="replyLevel != null">
+        #{replyLevel,jdbcType=INTEGER},
+      </if>
+      <if test="thumbUpNumber != null">
+        #{thumbUpNumber,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.demo.entity.ReplyComments">
+    update tb_reply_comments
+    <set>
+      <if test="commentsId != null">
+        comments_id = #{commentsId,jdbcType=BIGINT},
+      </if>
+      <if test="replyMemberId != null">
+        reply_member_id = #{replyMemberId,jdbcType=BIGINT},
+      </if>
+      <if test="replyMemberName != null">
+        reply_member_name = #{replyMemberName,jdbcType=VARCHAR},
+      </if>
+      <if test="replyMemberUrl != null">
+        reply_member_url = #{replyMemberUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="replyContent != null">
+        reply_content = #{replyContent,jdbcType=VARCHAR},
+      </if>
+      <if test="byReplyMemberId != null">
+        by_reply_member_id = #{byReplyMemberId,jdbcType=BIGINT},
+      </if>
+      <if test="byReplyMemberName != null">
+        by_reply_member_name = #{byReplyMemberName,jdbcType=VARCHAR},
+      </if>
+      <if test="byReplyMemberComments != null">
+        by_reply_member_comments = #{byReplyMemberComments,jdbcType=VARCHAR},
+      </if>
+      <if test="replyLevel != null">
+        reply_level = #{replyLevel,jdbcType=INTEGER},
+      </if>
+      <if test="thumbUpNumber != null">
+        thumb_up_number = #{thumbUpNumber,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.demo.entity.ReplyComments">
+    update tb_reply_comments
+    set comments_id = #{commentsId,jdbcType=BIGINT},
+      reply_member_id = #{replyMemberId,jdbcType=BIGINT},
+      reply_member_name = #{replyMemberName,jdbcType=VARCHAR},
+      reply_member_url = #{replyMemberUrl,jdbcType=VARCHAR},
+      reply_content = #{replyContent,jdbcType=VARCHAR},
+      by_reply_member_id = #{byReplyMemberId,jdbcType=BIGINT},
+      by_reply_member_name = #{byReplyMemberName,jdbcType=VARCHAR},
+      by_reply_member_comments = #{byReplyMemberComments,jdbcType=VARCHAR},
+      reply_level = #{replyLevel,jdbcType=INTEGER},
+      thumb_up_number = #{thumbUpNumber,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

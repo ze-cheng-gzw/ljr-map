@@ -19,12 +19,6 @@ public class AlbumInfoVO implements Serializable {
     @ApiModelProperty("专辑图片")
     private String albumImg;
 
-    @ApiModelProperty("语言")
-    private String voice;
-
-    @ApiModelProperty("唱片公司")
-    private String recordCompany;
-
     @ApiModelProperty("专辑简介")
     private String albumIntroduction;
 }

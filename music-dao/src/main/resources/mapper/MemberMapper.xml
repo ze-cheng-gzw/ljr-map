@@ -7,10 +7,11 @@
     <result column="member_mobile" jdbcType="VARCHAR" property="memberMobile" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="password_salt" jdbcType="VARCHAR" property="passwordSalt" />
+    <result column="vip_level" jdbcType="INTEGER" property="vipLevel" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    member_id, member_name, member_mobile, password, password_salt, create_time
+    member_id, member_name, member_mobile, password, password_salt, vip_level, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -18,17 +19,23 @@
     from tb_member
     where member_id = #{memberId,jdbcType=BIGINT}
   </select>
+  <select id="getMemberByMobile" resultType="com.demo.entity.Member">
+    select
+    <include refid="Base_Column_List" />
+    from tb_member
+    where member_mobile = #{loginName}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tb_member
     where member_id = #{memberId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.demo.entity.Member">
     insert into tb_member (member_id, member_name, member_mobile, 
-      password, password_salt, create_time
-      )
+      password, password_salt, vip_level, 
+      create_time)
     values (#{memberId,jdbcType=BIGINT}, #{memberName,jdbcType=VARCHAR}, #{memberMobile,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{passwordSalt,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
-      )
+      #{password,jdbcType=VARCHAR}, #{passwordSalt,jdbcType=VARCHAR}, #{vipLevel,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.demo.entity.Member">
     insert into tb_member
@@ -47,6 +54,9 @@
       </if>
       <if test="passwordSalt != null">
         password_salt,
+      </if>
+      <if test="vipLevel != null">
+        vip_level,
       </if>
       <if test="createTime != null">
         create_time,
@@ -68,6 +78,9 @@
       <if test="passwordSalt != null">
         #{passwordSalt,jdbcType=VARCHAR},
       </if>
+      <if test="vipLevel != null">
+        #{vipLevel,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -88,6 +101,9 @@
       <if test="passwordSalt != null">
         password_salt = #{passwordSalt,jdbcType=VARCHAR},
       </if>
+      <if test="vipLevel != null">
+        vip_level = #{vipLevel,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -100,6 +116,7 @@
       member_mobile = #{memberMobile,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       password_salt = #{passwordSalt,jdbcType=VARCHAR},
+      vip_level = #{vipLevel,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where member_id = #{memberId,jdbcType=BIGINT}
   </update>

@@ -8,19 +8,31 @@ public class Singer implements Serializable {
 
     private String singerName;
 
+    private String firstLetter;
+
+    private Integer singerSex;
+
     private String singerImg;
 
     private String nationality;
 
-    private String professional;
-
-    private String magnumOpus;
-
     private String personalIntroduce;
 
-    private String soloCareer;
-
     private Date createTime;
+
+    @Override
+    public String toString() {
+        return "Singer{" +
+                "singerId=" + singerId +
+                ", singerName='" + singerName + '\'' +
+                ", firstLetter='" + firstLetter + '\'' +
+                ", singerSex=" + singerSex +
+                ", singerImg='" + singerImg + '\'' +
+                ", nationality='" + nationality + '\'' +
+                ", personalIntroduce='" + personalIntroduce + '\'' +
+                ", createTime=" + createTime +
+                '}';
+    }
 
     private static final long serialVersionUID = 1L;
 
@@ -40,6 +52,22 @@ public class Singer implements Serializable {
         this.singerName = singerName == null ? null : singerName.trim();
     }
 
+    public String getFirstLetter() {
+        return firstLetter;
+    }
+
+    public void setFirstLetter(String firstLetter) {
+        this.firstLetter = firstLetter;
+    }
+
+    public Integer getSingerSex() {
+        return singerSex;
+    }
+
+    public void setSingerSex(Integer singerSex) {
+        this.singerSex = singerSex;
+    }
+
     public String getSingerImg() {
         return singerImg;
     }
@@ -56,36 +84,12 @@ public class Singer implements Serializable {
         this.nationality = nationality == null ? null : nationality.trim();
     }
 
-    public String getProfessional() {
-        return professional;
-    }
-
-    public void setProfessional(String professional) {
-        this.professional = professional == null ? null : professional.trim();
-    }
-
-    public String getMagnumOpus() {
-        return magnumOpus;
-    }
-
-    public void setMagnumOpus(String magnumOpus) {
-        this.magnumOpus = magnumOpus == null ? null : magnumOpus.trim();
-    }
-
     public String getPersonalIntroduce() {
         return personalIntroduce;
     }
 
     public void setPersonalIntroduce(String personalIntroduce) {
         this.personalIntroduce = personalIntroduce == null ? null : personalIntroduce.trim();
-    }
-
-    public String getSoloCareer() {
-        return soloCareer;
-    }
-
-    public void setSoloCareer(String soloCareer) {
-        this.soloCareer = soloCareer == null ? null : soloCareer.trim();
     }
 
     public Date getCreateTime() {

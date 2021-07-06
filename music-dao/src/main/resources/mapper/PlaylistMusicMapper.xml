@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.dao.PlaylistMusicMapper">
+  <resultMap id="BaseResultMap" type="com.demo.entity.PlaylistMusic">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="playlist_id" jdbcType="BIGINT" property="playlistId" />
+    <result column="music_id" jdbcType="BIGINT" property="musicId" />
+    <result column="music_name" jdbcType="VARCHAR" property="musicName" />
+    <result column="singer_name" jdbcType="VARCHAR" property="singerName" />
+    <result column="music_time_length" jdbcType="VARCHAR" property="musicTimeLength" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, playlist_id, music_id, music_name, singer_name, music_time_length, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_playlist_music
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+    <select id="findPlaylistMusicByPlaylistId" resultType="com.demo.vo.PlaylistMusicVO">
+      select id, music_name as musicName, singer_name as singerName, music_time_length as musicTimeLength
+          from tb_playlist_music
+          where playlist_id = #{playlistId} order by update_time
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_playlist_music
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByPlaylistId" parameterType="java.lang.Long">
+    delete from tb_playlist_music
+    where playlist_id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.demo.entity.PlaylistMusic">
+    insert into tb_playlist_music (id, playlist_id, music_id, 
+      music_name, singer_name, music_time_length,
+      update_time)
+    values (#{id,jdbcType=BIGINT}, #{playlistId,jdbcType=BIGINT}, #{musicId,jdbcType=BIGINT}, 
+      #{musicName,jdbcType=VARCHAR}, #{singerName,jdbcType=VARCHAR}, #{musicTimeLength,jdbcType=VARCHAR},
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.demo.entity.PlaylistMusic">
+    insert into tb_playlist_music
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="playlistId != null">
+        playlist_id,
+      </if>
+      <if test="musicId != null">
+        music_id,
+      </if>
+      <if test="musicName != null">
+        music_name,
+      </if>
+      <if test="singerName != null">
+        singer_name,
+      </if>
+      <if test="musicTimeLength != null">
+        music_time_length,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="playlistId != null">
+        #{playlistId,jdbcType=BIGINT},
+      </if>
+      <if test="musicId != null">
+        #{musicId,jdbcType=BIGINT},
+      </if>
+      <if test="musicName != null">
+        #{musicName,jdbcType=VARCHAR},
+      </if>
+      <if test="singerName != null">
+        #{singerName,jdbcType=VARCHAR},
+      </if>
+      <if test="musicTimeLength != null">
+        #{musicTimeLength,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.demo.entity.PlaylistMusic">
+    update tb_playlist_music
+    <set>
+      <if test="playlistId != null">
+        playlist_id = #{playlistId,jdbcType=BIGINT},
+      </if>
+      <if test="musicId != null">
+        music_id = #{musicId,jdbcType=BIGINT},
+      </if>
+      <if test="musicName != null">
+        music_name = #{musicName,jdbcType=VARCHAR},
+      </if>
+      <if test="singerName != null">
+        singer_name = #{singerName,jdbcType=VARCHAR},
+      </if>
+      <if test="musicTimeLength != null">
+        music_time_length = #{musicTimeLength,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.demo.entity.PlaylistMusic">
+    update tb_playlist_music
+    set playlist_id = #{playlistId,jdbcType=BIGINT},
+      music_id = #{musicId,jdbcType=BIGINT},
+      music_name = #{musicName,jdbcType=VARCHAR},
+      singer_name = #{singerName,jdbcType=VARCHAR},
+      music_time_length = #{musicTimeLength,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

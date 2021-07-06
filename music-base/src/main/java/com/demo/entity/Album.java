@@ -12,13 +12,20 @@ public class Album implements Serializable {
 
     private String albumImg;
 
-    private String voice;
-
-    private String recordCompany;
-
     private String albumIntroduction;
 
     private Date createTime;
+
+    @Override
+    public String toString() {
+        return "Album{" +
+                "albumId=" + albumId +
+                ", albumName='" + albumName + '\'' +
+                ", releaseTime='" + releaseTime + '\'' +
+                ", albumImg='" + albumImg + '\'' +
+                ", albumIntroduction='" + albumIntroduction + '\'' +
+                '}';
+    }
 
     private static final long serialVersionUID = 1L;
 
@@ -52,22 +59,6 @@ public class Album implements Serializable {
 
     public void setAlbumImg(String albumImg) {
         this.albumImg = albumImg == null ? null : albumImg.trim();
-    }
-
-    public String getVoice() {
-        return voice;
-    }
-
-    public void setVoice(String voice) {
-        this.voice = voice == null ? null : voice.trim();
-    }
-
-    public String getRecordCompany() {
-        return recordCompany;
-    }
-
-    public void setRecordCompany(String recordCompany) {
-        this.recordCompany = recordCompany == null ? null : recordCompany.trim();
     }
 
     public String getAlbumIntroduction() {

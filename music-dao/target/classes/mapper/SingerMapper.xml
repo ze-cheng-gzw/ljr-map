@@ -1,50 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.demo.dao.SingerMapper">
+
   <resultMap id="BaseResultMap" type="com.demo.entity.Singer">
     <id column="singer_id" jdbcType="BIGINT" property="singerId" />
     <result column="singer_name" jdbcType="VARCHAR" property="singerName" />
+    <result column="first_letter" jdbcType="VARCHAR" property="firstLetter" />
+    <result column="singer_sex" jdbcType="INTEGER" property="singerSex" />
     <result column="singer_img" jdbcType="VARCHAR" property="singerImg" />
     <result column="nationality" jdbcType="VARCHAR" property="nationality" />
-    <result column="professional" jdbcType="VARCHAR" property="professional" />
-    <result column="magnum_opus" jdbcType="VARCHAR" property="magnumOpus" />
     <result column="personal_introduce" jdbcType="VARCHAR" property="personalIntroduce" />
-    <result column="solo_career" jdbcType="VARCHAR" property="soloCareer" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    singer_id, singer_name, singer_img, nationality, professional, magnum_opus, personal_introduce, 
-    solo_career, create_time
+    singer_id, singer_name, first_letter, singer_sex, singer_img, nationality, personal_introduce,
+    create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from tb_singer
     where singer_id = #{singerId,jdbcType=BIGINT}
   </select>
-    <select id="getSingerInfoBySingerId" resultType="com.demo.vo.SingerInfoVO">
+  <select id="getSingerInfoBySingerId" resultType="com.demo.vo.SingerInfoVO">
       select ts.singer_name        as singerName,
+             ts.singer_sex         as singerSex,
              ts.singer_img         as singerImg,
              ts.nationality,
-             ts.professional,
-             ts.magnum_opus        as magnumOpus,
              ts.personal_introduce as personalIntroduce,
-             ts.solo_career        as soloCareer
       from tb_singer ts where ts.singer_id = #{singerId}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tb_singer
     where singer_id = #{singerId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.demo.entity.Singer">
-    insert into tb_singer (singer_id, singer_name, singer_img, 
-      nationality, professional, magnum_opus, 
-      personal_introduce, solo_career, create_time
-      )
-    values (#{singerId,jdbcType=BIGINT}, #{singerName,jdbcType=VARCHAR}, #{singerImg,jdbcType=VARCHAR}, 
-      #{nationality,jdbcType=VARCHAR}, #{professional,jdbcType=VARCHAR}, #{magnumOpus,jdbcType=VARCHAR}, 
-      #{personalIntroduce,jdbcType=VARCHAR}, #{soloCareer,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
-      )
+    insert into tb_singer (singer_id, singer_name, first_letter, singer_sex,
+      singer_img, nationality, personal_introduce,
+      create_time)
+    values (#{singerId,jdbcType=BIGINT}, #{singerName,jdbcType=VARCHAR}, #{firstLetter,jdbcType=VARCHAR},
+    #{singerSex,jdbcType=INTEGER}, #{singerImg,jdbcType=VARCHAR}, #{nationality,jdbcType=VARCHAR},
+    #{personalIntroduce,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.demo.entity.Singer">
     insert into tb_singer
@@ -55,23 +51,20 @@
       <if test="singerName != null">
         singer_name,
       </if>
+      <if test="firstLetter != null">
+        first_letter,
+      </if>
+      <if test="singerSex != null">
+        singer_sex,
+      </if>
       <if test="singerImg != null">
         singer_img,
       </if>
       <if test="nationality != null">
         nationality,
       </if>
-      <if test="professional != null">
-        professional,
-      </if>
-      <if test="magnumOpus != null">
-        magnum_opus,
-      </if>
       <if test="personalIntroduce != null">
         personal_introduce,
-      </if>
-      <if test="soloCareer != null">
-        solo_career,
       </if>
       <if test="createTime != null">
         create_time,
@@ -84,34 +77,63 @@
       <if test="singerName != null">
         #{singerName,jdbcType=VARCHAR},
       </if>
+      <if test="firstLetter != null">
+        #{firstLetter,jdbcType=VARCHAR},
+      </if>
+      <if test="singerSex != null">
+        #{singerSex,jdbcType=INTEGER},
+      </if>
       <if test="singerImg != null">
         #{singerImg,jdbcType=VARCHAR},
       </if>
       <if test="nationality != null">
         #{nationality,jdbcType=VARCHAR},
       </if>
-      <if test="professional != null">
-        #{professional,jdbcType=VARCHAR},
-      </if>
-      <if test="magnumOpus != null">
-        #{magnumOpus,jdbcType=VARCHAR},
-      </if>
       <if test="personalIntroduce != null">
         #{personalIntroduce,jdbcType=VARCHAR},
-      </if>
-      <if test="soloCareer != null">
-        #{soloCareer,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.demo.entity.Singer">
+  <!--
+    <insert id="addSingerList" parameterType="java.util.List">
+      insert into tb_singer(singer_id, singer_name, first_letter, singer_sex, singer_img, nationality, personal_introduce) values
+      <foreach collection= "singers" item="singer" separator="," open="(" close=")" index="">
+        #{singer.singerId,jdbcType=BIGINT},
+        #{singer.singerName,jdbcType=VARCHAR},
+        #{firstLetter,jdbcType=VARCHAR},
+        #{singer.singerSex,jdbcType=INTEGER},
+        #{singer.singerImg,jdbcType=VARCHAR},
+        #{singer.nationality,jdbcType=VARCHAR}
+      </foreach>
+    </insert> -->
+  <insert id="addSingerList" parameterType="java.util.List">
+    insert into tb_singer (singer_id, singer_name, first_letter, singer_sex, singer_img, nationality, personal_introduce) values
+    <foreach collection= "singers" item="singer" index="index" separator=",">
+      (
+      #{singer.singerId,jdbcType=BIGINT},
+      #{singer.singerName,jdbcType=VARCHAR},
+      #{singer.firstLetter,jdbcType=VARCHAR},
+      #{singer.singerSex,jdbcType=INTEGER},
+      #{singer.singerImg,jdbcType=VARCHAR},
+      #{singer.nationality,jdbcType=VARCHAR},
+      #{singer.personalIntroduce,jdbcType=VARCHAR}
+      )
+    </foreach>
+  </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.demo.entity.Singer">
     update tb_singer
     <set>
       <if test="singerName != null">
         singer_name = #{singerName,jdbcType=VARCHAR},
+      </if>
+      <if test="firstLetter != null">
+        first_letter = #{firstLetter,jdbcType=VARCHAR},
+      </if>
+      <if test="singerSex != null">
+        singer_sex = #{singerSex,jdbcType=INTEGER},
       </if>
       <if test="singerImg != null">
         singer_img = #{singerImg,jdbcType=VARCHAR},
@@ -119,17 +141,8 @@
       <if test="nationality != null">
         nationality = #{nationality,jdbcType=VARCHAR},
       </if>
-      <if test="professional != null">
-        professional = #{professional,jdbcType=VARCHAR},
-      </if>
-      <if test="magnumOpus != null">
-        magnum_opus = #{magnumOpus,jdbcType=VARCHAR},
-      </if>
       <if test="personalIntroduce != null">
         personal_introduce = #{personalIntroduce,jdbcType=VARCHAR},
-      </if>
-      <if test="soloCareer != null">
-        solo_career = #{soloCareer,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -140,12 +153,11 @@
   <update id="updateByPrimaryKey" parameterType="com.demo.entity.Singer">
     update tb_singer
     set singer_name = #{singerName,jdbcType=VARCHAR},
+        first_letter = #{firstLetter,jdbcType=VARCHAR},
+      singer_sex = #{singerSex,jdbcType=INTEGER},
       singer_img = #{singerImg,jdbcType=VARCHAR},
       nationality = #{nationality,jdbcType=VARCHAR},
-      professional = #{professional,jdbcType=VARCHAR},
-      magnum_opus = #{magnumOpus,jdbcType=VARCHAR},
       personal_introduce = #{personalIntroduce,jdbcType=VARCHAR},
-      solo_career = #{soloCareer,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where singer_id = #{singerId,jdbcType=BIGINT}
   </update>

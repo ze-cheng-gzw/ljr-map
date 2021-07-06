@@ -19,15 +19,6 @@ public class SingerInfoVO implements Serializable {
     @ApiModelProperty("国籍")
     private String nationality;
 
-    @ApiModelProperty("职业")
-    private String professional;
-
-    @ApiModelProperty("代表作")
-    private String magnumOpus;
-
     @ApiModelProperty("个人介绍")
     private String personalIntroduce;
-
-    @ApiModelProperty("从艺生涯")
-    private String soloCareer;
 }
