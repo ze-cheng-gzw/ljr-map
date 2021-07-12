@@ -5,13 +5,14 @@
     <id column="member_id" jdbcType="BIGINT" property="memberId" />
     <result column="member_name" jdbcType="VARCHAR" property="memberName" />
     <result column="member_mobile" jdbcType="VARCHAR" property="memberMobile" />
+    <result column="member_Url" jdbcType="VARCHAR" property="memberUrl" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="password_salt" jdbcType="VARCHAR" property="passwordSalt" />
     <result column="vip_level" jdbcType="INTEGER" property="vipLevel" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    member_id, member_name, member_mobile, password, password_salt, vip_level, create_time
+    member_id, member_name, member_mobile, member_Url, password, password_salt, vip_level, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -30,14 +31,14 @@
     where member_id = #{memberId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.demo.entity.Member">
-    insert into tb_member (member_id, member_name, member_mobile, 
+    insert into tb_member (member_id, member_name, member_mobile, member_Url
       password, password_salt, vip_level, 
       create_time)
-    values (#{memberId,jdbcType=BIGINT}, #{memberName,jdbcType=VARCHAR}, #{memberMobile,jdbcType=VARCHAR}, 
+    values (#{memberId,jdbcType=BIGINT}, #{memberName,jdbcType=VARCHAR}, #{memberMobile,jdbcType=VARCHAR}, #{memberUrl,jdbcType=VARCHAR},
       #{password,jdbcType=VARCHAR}, #{passwordSalt,jdbcType=VARCHAR}, #{vipLevel,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.demo.entity.Member">
+  <insert id="insertSelective" parameterType="com.demo.entity.Member" useGeneratedKeys="true" keyProperty="memberId">
     insert into tb_member
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="memberId != null">
@@ -48,6 +49,9 @@
       </if>
       <if test="memberMobile != null">
         member_mobile,
+      </if>
+      <if test="memberUrl != null">
+        member_url,
       </if>
       <if test="password != null">
         password,
@@ -72,6 +76,9 @@
       <if test="memberMobile != null">
         #{memberMobile,jdbcType=VARCHAR},
       </if>
+      <if test="memberUrl != null">
+        #{memberUrl,jdbcType=VARCHAR},
+      </if>
       <if test="password != null">
         #{password,jdbcType=VARCHAR},
       </if>
@@ -95,6 +102,9 @@
       <if test="memberMobile != null">
         member_mobile = #{memberMobile,jdbcType=VARCHAR},
       </if>
+      <if test="memberUrl != null">
+        member_url = #{memberUrl,jdbcType=VARCHAR},
+      </if>
       <if test="password != null">
         password = #{password,jdbcType=VARCHAR},
       </if>
@@ -114,6 +124,7 @@
     update tb_member
     set member_name = #{memberName,jdbcType=VARCHAR},
       member_mobile = #{memberMobile,jdbcType=VARCHAR},
+      member_url = #{memberUrl,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       password_salt = #{passwordSalt,jdbcType=VARCHAR},
       vip_level = #{vipLevel,jdbcType=INTEGER},

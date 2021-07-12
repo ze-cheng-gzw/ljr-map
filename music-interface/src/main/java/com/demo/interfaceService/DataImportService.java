@@ -10,4 +10,11 @@ public interface DataImportService {
      * @return
      */
     boolean handleFileUpload(ReadExcelVO readExcelVO);
+
+    /**
+     * 导入歌曲+歌单
+     * @param readExcelVO
+     * @return
+     */
+    boolean importPlaylist(ReadExcelVO readExcelVO);
 }

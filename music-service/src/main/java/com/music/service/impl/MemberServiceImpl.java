@@ -9,9 +9,12 @@ import com.demo.entity.Member;
 import com.demo.entity.MemberToken;
 import com.demo.enums.MemberTypeEnum;
 import com.demo.interfaceService.MemberService;
+import com.demo.param.MemberRegisteredParam;
 import com.demo.util.Base64Utils;
 import com.demo.util.CommonUtils;
 import com.demo.util.TokenUtil;
+import com.demo.vo.MemberInfoVO;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -79,5 +82,56 @@ public class MemberServiceImpl implements MemberService {
         int count = memberTokenMapper.deleteByPrimaryKey(memberToken.getId());
 
         return count == 1 ? true : false;
+    }
+
+    //用户注册
+    @Transactional(rollbackFor = Exception.class)
+    public String memberRegistered(MemberRegisteredParam memberRegisteredParam) {
+        //判断该手机号是否注册
+        Member member = memberMapper.getMemberByMobile(memberRegisteredParam.getMemberMobile());
+        if (member != null) {
+            BizException.fail("改手机号已注册");
+        }
+        String password = Base64Utils.decode(memberRegisteredParam.getMemberPassword());
+        String salt = CommonUtils.genSalt();
+        password = CommonUtils.genMd5Password(password, salt);
+        Member insertMember = new Member();
+        insertMember.setMemberName(memberRegisteredParam.getMemberName());
+        insertMember.setMemberMobile(memberRegisteredParam.getMemberMobile());
+        insertMember.setPasswordSalt(salt);
+        insertMember.setPassword(password);
+        insertMember.setMemberUrl(memberRegisteredParam.getMemberUrl());
+        int addCount = memberMapper.insertSelective(insertMember);
+        if (addCount != 1) {
+            BizException.fail("添加用户信息失败，注册失败");
+        }
+        //设置改用户的token
+        String token = TokenUtil.getNewToken(System.currentTimeMillis() + "", insertMember.getMemberId());
+        //当前时间
+        Date now = new Date();
+        //过期时间
+        Date expireTime = new Date(now.getTime() + 7 * 24 * 3600 * 1000);//过期时间 7 天
+        MemberToken memberToken = new MemberToken();
+        memberToken.setMemberId(insertMember.getMemberId());
+        memberToken.setToken(token);
+        memberToken.setMemberType(MemberTypeEnum.COMMON_MEMBER.getMemberType());
+        memberToken.setUpdateTime(now);
+        memberToken.setExpireTime(expireTime);
+        addCount = memberTokenMapper.insertSelective(memberToken);
+        if (addCount != 1) {
+            BizException.fail("添加token失败，注册失败");
+        }
+        return token;
+    }
+
+    //获取用户信息
+    public MemberInfoVO getInfo(MemberToken memberToken) {
+        Member member = memberMapper.selectByPrimaryKey(memberToken.getMemberId());
+        MemberInfoVO memberInfoVO = new MemberInfoVO();
+        memberInfoVO.setMemberMobile(member.getMemberMobile());
+        memberInfoVO.setMemberName(member.getMemberName());
+        memberInfoVO.setMemberUrl(member.getMemberUrl());
+        memberInfoVO.setVipLevel(member.getVipLevel());
+        return memberInfoVO;
     }
 }

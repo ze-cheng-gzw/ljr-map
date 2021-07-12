@@ -10,6 +10,8 @@ public class Member implements Serializable {
 
     private String memberMobile;
 
+    private String memberUrl;
+
     private String password;
 
     private String passwordSalt;
@@ -42,6 +44,14 @@ public class Member implements Serializable {
 
     public void setMemberMobile(String memberMobile) {
         this.memberMobile = memberMobile == null ? null : memberMobile.trim();
+    }
+
+    public String getMemberUrl() {
+        return memberUrl;
+    }
+
+    public void setMemberUrl(String memberUrl) {
+        this.memberUrl = memberUrl;
     }
 
     public String getPassword() {

@@ -1,8 +1,6 @@
 package com.demo.vo;
 
-import com.demo.entity.Album;
-import com.demo.entity.Music;
-import com.demo.entity.Singer;
+import com.demo.entity.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -22,4 +20,10 @@ public class ReadExcelVO implements Serializable {
 
     @ApiModelProperty("专辑信息的集合")
     private List<Album> albumList;
+
+    @ApiModelProperty("歌单信息的集合")
+    private List<Playlist> playlists;
+
+    @ApiModelProperty("歌单+音乐信息的集合")
+    private List<PlaylistMusic> playlistMusics;
 }

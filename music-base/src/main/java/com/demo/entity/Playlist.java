@@ -20,6 +20,21 @@ public class Playlist implements Serializable {
 
     private Date updateTime;
 
+    @Override
+    public String toString() {
+        return "Playlist{" +
+                "id=" + id +
+                ", playlistTitle='" + playlistTitle + '\'' +
+                ", playlistCover='" + playlistCover + '\'' +
+                ", playlistLabel='" + playlistLabel + '\'' +
+                ", playlistIntroduction='" + playlistIntroduction + '\'' +
+                ", amountOfPlay=" + amountOfPlay +
+                ", memberId=" + memberId +
+                ", updateTime=" + updateTime +
+                ", createTme=" + createTme +
+                '}';
+    }
+
     private Date createTme;
 
     private static final long serialVersionUID = 1L;

@@ -32,7 +32,8 @@ public class ReadTxtFile {
                 BizException.fail(filePath + "文件不存在");
             }
         } catch (Exception e) {
-            BizException.fail(filePath + "文件读取异常");
+//            BizException.fail(filePath + "文件读取异常");
+            return "歌词读取错误";
         }
         return result;
 

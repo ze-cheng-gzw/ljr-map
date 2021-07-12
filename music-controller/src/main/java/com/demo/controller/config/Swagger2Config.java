@@ -1,5 +1,7 @@
 package com.demo.controller.config;
 
+import com.demo.entity.Member;
+import com.demo.entity.MemberToken;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -37,7 +39,7 @@ public class Swagger2Config {
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
-//                .ignoredParameterTypes(HrMember.class)
+                .ignoredParameterTypes(MemberToken.class)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.demo.controller.rest"))// 修改为自己的 controller 包路径
                 .paths(PathSelectors.any())

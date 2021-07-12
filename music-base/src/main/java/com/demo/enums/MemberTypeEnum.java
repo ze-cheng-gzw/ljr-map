@@ -6,8 +6,8 @@ package com.demo.enums;
 public enum MemberTypeEnum {
 
     DEFAULT(-1, "ERROR"),
-    COMMON_MEMBER(0, "COMMON_MEMBER"),
-    ADMIN_MEMBER(1, "ADMIN_MEMBER");
+    COMMON_MEMBER(1, "COMMON_MEMBER"),
+    ADMIN_MEMBER(2, "ADMIN_MEMBER");
 
     private int memberType;
 
@@ -18,9 +18,9 @@ public enum MemberTypeEnum {
         this.name = name;
     }
 
-    public static MemberTypeEnum getMemberTypeEnumByType(int memberType) {
+    public static MemberTypeEnum getMemberTypeEnumByType(String name) {
         for (MemberTypeEnum memberTypeEnum : MemberTypeEnum.values()) {
-            if (memberTypeEnum.getMemberType() == memberType) {
+            if (memberTypeEnum.getName().equals(name)) {
                 return memberTypeEnum;
             }
         }

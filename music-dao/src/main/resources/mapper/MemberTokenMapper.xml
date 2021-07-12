@@ -18,7 +18,7 @@
     from tb_member_token
     where id = #{id,jdbcType=INTEGER}
   </select>
-    <select id="selectByTokenAndMemberType" resultType="com.demo.entity.MemberToken">
+    <select id="selectByTokenAndMemberType" resultMap="BaseResultMap">
       select
       <include refid="Base_Column_List" />
       from tb_member_token

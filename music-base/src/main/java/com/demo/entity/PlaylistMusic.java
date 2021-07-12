@@ -16,6 +16,19 @@ public class PlaylistMusic implements Serializable {
 
     private String musicTimeLength;
 
+    @Override
+    public String toString() {
+        return "PlaylistMusic{" +
+                "id=" + id +
+                ", playlistId=" + playlistId +
+                ", musicId=" + musicId +
+                ", musicName='" + musicName + '\'' +
+                ", singerName='" + singerName + '\'' +
+                ", musicTimeLength='" + musicTimeLength + '\'' +
+                ", updateTime=" + updateTime +
+                '}';
+    }
+
     private Date updateTime;
 
     private static final long serialVersionUID = 1L;

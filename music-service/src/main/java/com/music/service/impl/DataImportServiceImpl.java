@@ -1,12 +1,8 @@
 package com.music.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.demo.dao.AlbumMapper;
-import com.demo.dao.MusicMapper;
-import com.demo.dao.SingerMapper;
-import com.demo.entity.Album;
-import com.demo.entity.Music;
-import com.demo.entity.Singer;
+import com.demo.dao.*;
+import com.demo.entity.*;
 import com.demo.interfaceService.DataImportService;
 import com.demo.vo.ReadExcelVO;
 import org.apache.ibatis.session.ExecutorType;
@@ -36,6 +32,12 @@ public class DataImportServiceImpl implements DataImportService {
 
     @Resource
     private AlbumMapper albumMapper;
+
+    @Resource
+    private PlaylistMapper playlistMapper;
+
+    @Resource
+    private PlaylistMusicMapper playlistMusicMapper;
 
     //导入歌曲+歌手+专辑
     public boolean handleFileUpload(ReadExcelVO readExcelVO) {
@@ -83,14 +85,14 @@ public class DataImportServiceImpl implements DataImportService {
 
 //        logger.info("-------------------------------------------");
 //        //将歌手添加到数据库
-        List<Singer> singerList = readExcelVO.getSingerList();
-        System.out.println("歌手数量：" + singerList.size());
-        for (Singer singer: singerList) {
-            System.out.println(singer.toString());
-        }
-        for (Singer singer:singerList) {
-            singerMapper.insertSelective(singer);
-        }
+//        List<Singer> singerList = readExcelVO.getSingerList();
+//        System.out.println("歌手数量：" + singerList.size());
+//        for (Singer singer: singerList) {
+//            System.out.println(singer.toString());
+//        }
+//        for (Singer singer:singerList) {
+//            singerMapper.insertSelective(singer);
+//        }
 //        try {
 //            session = sqlSessionTemplate.getSqlSessionFactory().openSession(ExecutorType.BATCH, false);
 //            int a = 100; //每次提交100条
@@ -165,6 +167,24 @@ public class DataImportServiceImpl implements DataImportService {
 //            }
 //
 //        }
+        return true;
+    }
+
+    @Override
+    public boolean importPlaylist(ReadExcelVO readExcelVO) {
+        //导入歌单
+//        List<Playlist> playlistList = readExcelVO.getPlaylists();
+//        for (Playlist playlist:playlistList) {
+//            playlistMapper.insertSelective(playlist);
+//        }
+//        List<PlaylistMusic> playlistMusicList = readExcelVO.getPlaylistMusics();
+//        for (PlaylistMusic playlistMusic:playlistMusicList) {
+//            playlistMusicMapper.insertSelective(playlistMusic);
+//        }
+        List<Music> musicList = readExcelVO.getMusicList();
+        for (Music music:musicList) {
+            musicMapper.insertSelective(music);
+        }
         return true;
     }
 }

@@ -1,8 +1,6 @@
 package com.demo.util;
 
-import com.demo.entity.Album;
-import com.demo.entity.Music;
-import com.demo.entity.Singer;
+import com.demo.entity.*;
 import com.demo.vo.ReadExcelVO;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
@@ -123,6 +121,99 @@ public class ExcelUtil {
         return readExcelVO;
     }
 
+    public static ReadExcelVO readExcelPlaylist(InputStream is, String type, Integer num /*需要展示的数量*/) {
+        ReadExcelVO readExcelVO = new ReadExcelVO();
+        //获得Workbook工作薄对象
+        Workbook workbook = getWorkBook(is, type);
+        if (workbook != null) {
+            //workbook.getNumberOfSheets()获取excel的sheet的数量
+            Long musicId = 271L;
+            for (int sheetNum = 0; sheetNum < 1; sheetNum++) {
+                //获得当前sheet工作表
+                Sheet sheet = workbook.getSheetAt(sheetNum);
+                if (sheet == null) {
+                    continue;
+                } //专辑为：254     歌手为：209
+                //获得当前sheet的开始行
+                int firstRowNum = sheet.getFirstRowNum();
+                //获得当前sheet的结束行
+                int lastRowNum = 0;
+                if (num == 0 || num == null) {
+                    lastRowNum = sheet.getLastRowNum();
+                } else {
+                    lastRowNum = sheet.getLastRowNum() > num ? num : sheet.getLastRowNum();
+                }
+                List<Playlist> playlists = new ArrayList<>();
+                List<Music> musicList = new ArrayList<>();
+                List<PlaylistMusic> playlistMusics = new ArrayList<>();
+
+                Map<String, Integer> playlistMap = new LinkedHashMap<>();
+                Map<String, Integer> musicMap = new LinkedHashMap<>();
+                for (int rowNum = firstRowNum + 1; rowNum <= lastRowNum; rowNum++) {
+                    //获得当前行
+                    Row row = sheet.getRow(rowNum);
+                    if (row == null) {
+                        continue;
+                    }
+
+                    //歌单
+                    Integer playlistId;
+                    String playlistName = row.getCell(0) == null ? "" : row.getCell(0).getStringCellValue();
+                    if (!playlistMap.containsKey(playlistName)) { //改名称不存在时
+                        playlistId = playlistMap.size() + 1;
+                        playlistMap.put(playlistName, playlistId);
+                        Playlist playlist = new Playlist();
+                        playlist.setId(new Long(playlistId));
+                        playlist.setPlaylistTitle(playlistName);
+                        playlist.setPlaylistCover(row.getCell(1) == null ? "" : row.getCell(1).getStringCellValue());
+                        playlist.setPlaylistLabel(row.getCell(2) == null ? "" : row.getCell(2).getStringCellValue());
+                        playlist.setPlaylistIntroduction(row.getCell(3) == null ? "" : row.getCell(3).getStringCellValue());
+                        playlist.setAmountOfPlay(new Long(row.getCell(4) == null ? "" : Integer.valueOf((int) row.getCell(4).getNumericCellValue()).toString()));
+                        playlist.setMemberId(1L); //歌单的归属者id
+                        playlists.add(playlist);
+                    } else {
+                        playlistId = playlistMap.get(playlistName);
+                    }
+
+                    //歌曲
+                    Music music = new Music();
+                    music.setMusicId(musicId);
+                    String musicName = row.getCell(5) == null ? "" : row.getCell(5).getStringCellValue();
+                    String singerName = row.getCell(6) == null ? "" : row.getCell(6).getStringCellValue();
+                    music.setMusicName(musicName);
+                    music.setMusicTimeLength(row.getCell(7) == null ? "" : row.getCell(7).getStringCellValue());
+                    music.setCoverUrl(row.getCell(8) == null ? "" : row.getCell(8).getStringCellValue());
+                    music.setMusicUrl(row.getCell(9) == null ? "" : row.getCell(9).getStringCellValue());
+                    //获取歌词
+                    String fileAddress = "/Users/zl/Downloads/song/" + musicName + "-" + singerName + ".txt";
+                    music.setMusicLyrics(ReadTxtFile.readTxt(fileAddress));
+                    music.setAlbumId(254L);
+                    music.setSingerId(209L);
+                    music.setToVip(0);
+                    if (!musicMap.containsKey(musicName + "-" + singerName)) { //不存在时才添加
+                        musicId++;
+                        musicList.add(music);
+                    }
+
+
+                    //歌单+歌曲
+                    PlaylistMusic playlistMusic = new PlaylistMusic();
+                    playlistMusic.setPlaylistId(new Long(playlistId));
+                    playlistMusic.setMusicId(music.getMusicId());
+                    playlistMusic.setSingerName("导入歌手");
+                    playlistMusic.setMusicTimeLength(music.getMusicTimeLength());
+                    playlistMusic.setMusicName(musicName);
+                    playlistMusics.add(playlistMusic);
+                }
+                readExcelVO.setMusicList(musicList);
+                readExcelVO.setPlaylistMusics(playlistMusics);
+                readExcelVO.setPlaylists(playlists);
+            }
+        }
+        return readExcelVO;
+    }
+
+
 
     //根据xls或者xlsx创建Workbook
     public static Workbook getWorkBook(InputStream is, String type) {
@@ -141,19 +232,6 @@ public class ExcelUtil {
 
         }
         return workbook;
-    }
-
-    public static void main(String[] args) {
-        Map<String, String> map = new HashMap<>();
-        System.out.println(map.size());
-        map.put("a", "100");
-        System.out.println(map.containsKey("ss"));
-        System.out.println(map.containsKey("a"));
-        System.out.println(map.size());
-        String s = "孙楠&周深";
-        System.out.println(s.contains("&"));
-        String s1 = "薛之谦";
-        System.out.println(s1.contains("&"));
     }
 
 }

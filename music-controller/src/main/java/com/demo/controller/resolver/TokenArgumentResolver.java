@@ -36,9 +36,11 @@ public class TokenArgumentResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         if (parameter.getParameterAnnotation(Token.class) instanceof Token) {
             String token = webRequest.getHeader("token");
-            String memberType = webRequest.getHeader("salaryMemberType");
+            String memberType = webRequest.getHeader("memberType");
+            System.out.println("token为:" + token + ";memberType为：" + memberType);
+            System.out.println("获取的type:" + MemberTypeEnum.getMemberTypeEnumByType(memberType).getMemberType());
             if (validToken(token, memberType)) {
-                MemberToken memberToken = memberTokenMapper.selectByTokenAndMemberType(token, MemberTypeEnum.valueOf(memberType).getMemberType());
+                MemberToken memberToken = memberTokenMapper.selectByTokenAndMemberType(token, MemberTypeEnum.getMemberTypeEnumByType(memberType).getMemberType());
                 if (memberToken == null || memberToken.getExpireTime().getTime() <= System.currentTimeMillis()) {
                     BizException.fail(ApiResponseCode.TOKEN_INVALID);//令牌无效
                 }
@@ -58,7 +60,7 @@ public class TokenArgumentResolver implements HandlerMethodArgumentResolver {
      * @return
      */
     private Boolean validToken(String token, String memberType) {
-        if (null != token && !"".equals(token) && token.length() == Constants.TOKEN_LENGTH && null != memberType && !"".equals(memberType) && MemberTypeEnum.valueOf(memberType) != MemberTypeEnum.DEFAULT) {
+        if (null != token && !"".equals(token) && token.length() == Constants.TOKEN_LENGTH && null != memberType && !"".equals(memberType) && MemberTypeEnum.getMemberTypeEnumByType(memberType) != MemberTypeEnum.DEFAULT) {
             return true;
         }
         return false;
